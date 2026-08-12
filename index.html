@@ -129,13 +129,6 @@
             100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.2), inset 0 0 10px rgba(102, 126, 234, 0.1); }
         }
 
-        /* 3D 倾斜容器 */
-        .tilt-card {
-            transform-style: preserve-3d;
-            will-change: transform;
-            transition: transform 0.15s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
         /* 开机动画 */
         .boot-screen {
             position: fixed;
@@ -792,13 +785,13 @@
             <p class="tagline"><span id="typer"></span><span class="cursor"></span></p>
 
             <!-- 简介卡片 -->
-            <div class="bio-card tilt-card" id="bioCard">
+            <div class="bio-card" id="bioCard">
                 <h2>✦ 关于我</h2>
                 <p>本人史迪仔，银河系最野的测试牛马。日常工作就是在代码的废墟里刨 bug，刨得比挖掘机还猛。开发说我难搞，我说这叫专业。用例写得比情书还深情，缺陷报告提得比分手信还决绝。别看我表面放飞，骨子里是个 INFJ——白天在工位上化身 Bug 猎手大杀四方，晚上戴上耳机就开始思考宇宙和人生的意义。音乐是我的精神氧气，发呆是我的充电方式。</p>
             </div>
 
             <!-- MBTI 卡片 -->
-            <div class="mbti-card tilt-card" id="mbtiCard">
+            <div class="mbti-card" id="mbtiCard">
                 <div class="mbti-inner">
                     <div class="mbti-type">INFJ</div>
                     <div class="mbti-title">提倡者 · The Advocate</div>
@@ -815,7 +808,7 @@
             </div>
 
             <!-- 五月天歌单 -->
-            <div class="music-card tilt-card">
+            <div class="music-card">
                 <h2>🎸 五月天 · 我的单曲循环</h2>
                 <div class="hint">点击播放 · 音源来自网易云音乐官方外链</div>
                 <iframe class="netease-frame" src="//music.163.com/outchain/player?type=2&id=386175&auto=0&height=66"></iframe>
@@ -1295,27 +1288,6 @@
             }
         }
         setTimeout(showBootLine, 300);
-
-        // ====== 3D 倾斜效果 ======
-        const tiltCards = document.querySelectorAll('.tilt-card');
-
-        tiltCards.forEach(card => {
-            card.addEventListener('mousemove', function(e) {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = (y - centerY) / centerY * -8;
-                const rotateY = (x - centerX) / centerX * 8;
-
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-            });
-
-            card.addEventListener('mouseleave', function() {
-                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-            });
-        });
 
         // ====== 背景音乐开关 ======
         const bgm = document.getElementById('bgm');
