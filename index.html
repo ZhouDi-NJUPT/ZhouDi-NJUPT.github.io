@@ -3,25 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人主页</title>
+    <title>史迪仔 | 个人主页</title>
+    <meta name="description" content="史迪仔的个人主页 — 银河系最野的测试牛马，Bug 终结者，INFJ 深夜哲学家。">
+    <meta name="theme-color" content="#0a0a1a">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="史迪仔 | 个人主页">
+    <meta property="og:description" content="银河系最野的测试牛马。Bug 猎手 / INFJ / 深夜哲学家。">
+    <meta property="og:image" content="avatar.jpg">
+    <meta property="og:locale" content="zh_CN">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+        }
+
+        :root {
+            --bg: #0a0a1a;
+            --text: #e0e0e0;
+            --text-dim: #94a3b8;
+            --text-faint: #475569;
+            --accent: #4facfe;
+            --accent2: #00f2fe;
+            --violet: #a78bfa;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            background: #0a0a1a;
-            color: #e0e0e0;
+            background: var(--bg);
+            color: var(--text);
             overflow-x: hidden;
             min-height: 100vh;
+            min-height: 100dvh;
+        }
+
+        body.custom-cursor,
+        body.custom-cursor a,
+        body.custom-cursor button {
             cursor: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         /* 自定义光标 */
@@ -29,12 +53,14 @@
             position: fixed;
             width: 8px;
             height: 8px;
-            background: #00f2fe;
+            background: var(--accent2);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px #00f2fe, 0 0 20px #00f2fe, 0 0 40px #4facfe;
+            box-shadow: 0 0 10px var(--accent2), 0 0 20px var(--accent2), 0 0 40px var(--accent);
+            left: -100px;
+            top: -100px;
         }
 
         .cursor-ring {
@@ -47,6 +73,8 @@
             z-index: 9998;
             transform: translate(-50%, -50%);
             transition: width 0.2s, height 0.2s, border-color 0.2s;
+            left: -100px;
+            top: -100px;
         }
 
         .cursor-ring.hovering {
@@ -64,6 +92,8 @@
             pointer-events: none;
             z-index: 0;
             transform: translate(-50%, -50%);
+            left: -400px;
+            top: -400px;
         }
 
         /* 扫描线覆盖层 */
@@ -82,12 +112,6 @@
                 rgba(0, 0, 0, 0.03) 2px,
                 rgba(0, 0, 0, 0.03) 4px
             );
-            animation: scanlineMove 8s linear infinite;
-        }
-
-        @keyframes scanlineMove {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 100px; }
         }
 
         /* 故障文字效果 */
@@ -102,21 +126,12 @@
             background-clip: text;
             letter-spacing: 2px;
             position: relative;
-            animation: glitch 3s infinite, gradientShift 4s linear infinite;
+            animation: gradientShift 4s linear infinite;
         }
 
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             100% { background-position: 300% 50%; }
-        }
-
-        @keyframes glitch {
-            0%, 90%, 100% { transform: translate(0); filter: none; }
-            91% { transform: translate(-2px, 1px); filter: hue-rotate(90deg); }
-            92% { transform: translate(2px, -1px); filter: hue-rotate(-90deg); }
-            93% { transform: translate(-1px, -1px); }
-            94% { transform: translate(1px, 2px); filter: hue-rotate(45deg); }
-            95% { transform: translate(0); filter: none; }
         }
 
         /* 霓虹脉冲边框 */
@@ -132,11 +147,8 @@
         /* 开机动画 */
         .boot-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0a0a1a;
+            inset: 0;
+            background: var(--bg);
             z-index: 10000;
             display: flex;
             flex-direction: column;
@@ -148,12 +160,13 @@
         .boot-screen.hidden {
             opacity: 0;
             visibility: hidden;
+            pointer-events: none;
         }
 
         .boot-text {
             font-family: 'Courier New', monospace;
             font-size: 0.9rem;
-            color: #4facfe;
+            color: var(--accent);
             text-align: left;
             line-height: 1.8;
         }
@@ -179,7 +192,7 @@
         .boot-progress-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
             border-radius: 2px;
             transition: width 0.3s ease;
         }
@@ -192,16 +205,10 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background-image: 
+            background-image:
                 linear-gradient(rgba(79, 172, 254, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(79, 172, 254, 0.03) 1px, transparent 1px);
             background-size: 60px 60px;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: perspective(500px) rotateX(5deg) translateY(0); }
-            100% { transform: perspective(500px) rotateX(5deg) translateY(60px); }
         }
 
         /* 矩阵代码雨 */
@@ -246,7 +253,7 @@
             opacity: 0.55;
             z-index: 0;
             pointer-events: none;
-            animation: float 12s ease-in-out infinite;
+            will-change: transform;
         }
 
         .glow-orb-1 {
@@ -255,6 +262,7 @@
             background: linear-gradient(135deg, #667eea, #764ba2);
             top: -150px;
             left: -100px;
+            animation: float 12s ease-in-out infinite;
         }
 
         .glow-orb-2 {
@@ -263,6 +271,7 @@
             background: linear-gradient(135deg, #f093fb, #f5576c);
             bottom: -100px;
             right: -100px;
+            animation: float 12s ease-in-out infinite;
             animation-delay: -4s;
         }
 
@@ -272,7 +281,7 @@
             background: linear-gradient(135deg, #4facfe, #00f2fe);
             top: 40%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            animation: floatCenter 12s ease-in-out infinite;
             animation-delay: -8s;
         }
 
@@ -280,10 +289,6 @@
             0%, 100% { transform: translate(0, 0) scale(1); }
             33% { transform: translate(30px, -40px) scale(1.05); }
             66% { transform: translate(-20px, 30px) scale(0.95); }
-        }
-
-        .glow-orb-3 {
-            animation: floatCenter 12s ease-in-out infinite;
         }
 
         @keyframes floatCenter {
@@ -327,22 +332,26 @@
             height: 140px;
             margin: 0 auto 2rem;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            font-weight: 700;
-            color: #fff;
             position: relative;
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 0 50px rgba(102, 126, 234, 0.5);
+            padding: 0;
+            border: none;
+            background: none;
+            overflow: visible;
         }
 
         .avatar:hover {
             transform: scale(1.08);
-            box-shadow: 0 0 80px rgba(102, 126, 4, 0.7);
+        }
+
+        .avatar:focus-visible {
+            outline: 2px solid var(--accent2);
+            outline-offset: 6px;
         }
 
         .avatar::before {
@@ -361,6 +370,7 @@
             border-radius: 50%;
             object-fit: cover;
             transition: filter 0.4s ease;
+            display: block;
         }
 
         @keyframes spin {
@@ -370,12 +380,12 @@
         /* 副标题打字机效果 */
         .tagline {
             font-size: 1.2rem;
-            color: #94a3b8;
+            color: var(--text-dim);
             margin-bottom: 2rem;
             min-height: 1.8rem;
         }
 
-        .cursor {
+        .type-cursor {
             display: inline-block;
             width: 2px;
             height: 1.2rem;
@@ -391,10 +401,10 @@
 
         /* 简介卡片 */
         .bio-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--card-border);
             border-radius: 20px;
             padding: 2rem;
             margin-bottom: 2rem;
@@ -438,8 +448,7 @@
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.12);
             color: #e2e8f0;
-            transition: all 0.3s ease;
-            cursor: default;
+            transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
         }
 
         .tag:hover {
@@ -465,18 +474,25 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #94a3b8;
+            color: var(--text-dim);
             text-decoration: none;
             font-size: 1.2rem;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
             backdrop-filter: blur(10px);
         }
 
-        .social-link:hover {
+        .social-link:hover,
+        .social-link:focus-visible {
             transform: translateY(-4px);
             border-color: rgba(102, 126, 234, 0.5);
             color: #fff;
             box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+            outline: none;
+        }
+
+        .social-link:focus-visible {
+            outline: 2px solid var(--accent2);
+            outline-offset: 3px;
         }
 
         .social-link svg {
@@ -489,7 +505,7 @@
         .footer {
             margin-top: 3rem;
             font-size: 0.8rem;
-            color: #475569;
+            color: var(--text-faint);
             text-align: center;
         }
 
@@ -502,23 +518,6 @@
         @keyframes beat {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.2); }
-        }
-
-        /* 滚动提示 */
-        .scroll-hint {
-            position: fixed;
-            bottom: 1.5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #475569;
-            font-size: 1.5rem;
-            animation: bounce 2s ease-in-out infinite;
-            z-index: 1;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-8px); }
         }
 
         /* MBTI 卡片 */
@@ -574,7 +573,7 @@
 
         .mbti-title {
             font-size: 0.9rem;
-            color: #a78bfa;
+            color: var(--violet);
             margin-bottom: 1rem;
             letter-spacing: 2px;
         }
@@ -597,7 +596,7 @@
             border: 1px solid rgba(167, 139, 250, 0.15);
             padding: 0.35rem 0.9rem;
             border-radius: 50px;
-            transition: all 0.3s ease;
+            transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
         }
 
         .mbti-trait:hover {
@@ -636,8 +635,8 @@
             font-size: 1.4rem;
             cursor: pointer;
             z-index: 9000;
-            transition: all 0.3s ease;
-            color: #4facfe;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+            color: var(--accent);
         }
 
         .music-btn:hover {
@@ -646,10 +645,15 @@
             transform: scale(1.08);
         }
 
+        .music-btn:focus-visible {
+            outline: 2px solid var(--accent2);
+            outline-offset: 3px;
+        }
+
         .music-btn.playing {
             animation: musicPulse 1.2s ease-in-out infinite;
             border-color: rgba(0, 242, 254, 0.7);
-            color: #00f2fe;
+            color: var(--accent2);
         }
 
         @keyframes musicPulse {
@@ -669,7 +673,7 @@
 
         .music-btn .eq span {
             width: 3px;
-            background: #00f2fe;
+            background: var(--accent2);
             border-radius: 2px;
             animation: eqBar 0.8s ease-in-out infinite;
         }
@@ -686,15 +690,27 @@
         /* 响应式 */
         @media (max-width: 600px) {
             .name { font-size: 2.2rem; }
-            .avatar { width: 110px; height: 110px; font-size: 2.4rem; }
+            .avatar { width: 110px; height: 110px; }
             .bio-card { padding: 1.5rem; }
             .tagline { font-size: 1rem; }
+            .music-btn { top: 1rem; right: 1rem; width: 44px; height: 44px; }
+        }
+
+        /* 无障碍：尊重减少动画偏好 */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .cursor-dot, .cursor-ring, .cursor-glow { display: none !important; }
+            body.custom-cursor, body.custom-cursor a, body.custom-cursor button { cursor: auto; }
         }
     </style>
 </head>
 <body>
     <!-- 开机动画 -->
-    <div class="boot-screen" id="bootScreen">
+    <div class="boot-screen" id="bootScreen" aria-hidden="true">
         <div class="boot-text" id="bootText"></div>
         <div class="boot-progress">
             <div class="boot-progress-bar" id="bootProgress"></div>
@@ -702,146 +718,128 @@
     </div>
 
     <!-- 扫描线 -->
-    <div class="scanlines"></div>
+    <div class="scanlines" aria-hidden="true"></div>
 
     <!-- 背景音乐 -->
-    <audio id="bgm" src="bgm.mp3" loop preload="auto"></audio>
-    <button class="music-btn" id="musicBtn" title="播放/暂停背景音乐">
-        <span class="icon">🎵</span>
-        <span class="eq"><span></span><span></span><span></span></span>
+    <audio id="bgm" src="bgm.m4a" loop preload="none"></audio>
+    <button class="music-btn" id="musicBtn" type="button" title="播放/暂停背景音乐" aria-label="播放或暂停背景音乐">
+        <span class="icon" aria-hidden="true">🎵</span>
+        <span class="eq" aria-hidden="true"><span></span><span></span><span></span></span>
     </button>
 
     <!-- 网格背景 -->
-    <div class="grid-bg"></div>
+    <div class="grid-bg" aria-hidden="true"></div>
 
     <!-- 自定义光标 -->
-    <div class="cursor-dot" id="cursorDot"></div>
-    <div class="cursor-ring" id="cursorRing"></div>
-    <div class="cursor-glow" id="cursorGlow"></div>
+    <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+    <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
     <!-- 拖尾画布 -->
-    <canvas id="trail"></canvas>
+    <canvas id="trail" aria-hidden="true"></canvas>
 
     <!-- 矩阵代码雨 -->
-    <canvas id="matrix"></canvas>
+    <canvas id="matrix" aria-hidden="true"></canvas>
 
     <!-- 粒子背景 -->
-    <canvas id="particles"></canvas>
+    <canvas id="particles" aria-hidden="true"></canvas>
 
     <!-- 渐变光球 -->
-    <div class="glow-orb glow-orb-1"></div>
-    <div class="glow-orb glow-orb-2"></div>
-    <div class="glow-orb glow-orb-3"></div>
+    <div class="glow-orb glow-orb-1" aria-hidden="true"></div>
+    <div class="glow-orb glow-orb-2" aria-hidden="true"></div>
+    <div class="glow-orb glow-orb-3" aria-hidden="true"></div>
 
     <!-- 主内容 -->
-    <div class="container">
+    <main class="container">
         <div class="hero">
             <!-- 头像 -->
-            <div class="avatar" id="avatar"><img src="avatar.png" alt="史迪仔"></div>
+            <button class="avatar" id="avatar" type="button" title="点我有惊喜" aria-label="史迪仔的头像，点击换色">
+                <img src="avatar.jpg" alt="史迪仔的头像" width="140" height="140" decoding="async" fetchpriority="high">
+            </button>
 
             <!-- 名字 -->
             <h1 class="name">史迪仔</h1>
 
             <!-- 打字机副标题 -->
-            <p class="tagline"><span id="typer"></span><span class="cursor"></span></p>
+            <p class="tagline" aria-live="off"><span id="typer"></span><span class="type-cursor" aria-hidden="true"></span></p>
 
             <!-- 简介卡片 -->
-            <div class="bio-card" id="bioCard">
+            <section class="bio-card" id="bioCard" aria-label="关于我">
                 <h2>✦ 关于我</h2>
                 <p>本人史迪仔，银河系最野的测试牛马。日常工作就是在代码的废墟里刨 bug，刨得比挖掘机还猛。开发说我难搞，我说这叫专业。用例写得比情书还深情，缺陷报告提得比分手信还决绝。别看我表面放飞，骨子里是个 INFJ——白天在工位上化身 Bug 猎手大杀四方，晚上戴上耳机就开始思考宇宙和人生的意义。音乐是我的精神氧气，发呆是我的充电方式。</p>
-            </div>
+            </section>
 
             <!-- MBTI 卡片 -->
-            <div class="mbti-card" id="mbtiCard">
+            <section class="mbti-card" id="mbtiCard" aria-label="MBTI 人格">
                 <div class="mbti-inner">
                     <div class="mbti-type">INFJ</div>
                     <div class="mbti-title">提倡者 · The Advocate</div>
-                    <div class="tags">
-                        <span class="tag">🔮 INFJ提倡者</span>
-                        <span class="tag">🐛 Bug终结者</span>
-                        <span class="tag">🎧 耳机焊死在头上</span>
-                        <span class="tag">🌊 表面平静 内心翻涌</span>
-                        <span class="tag">🐂 牛马天花板</span>
-                        <span class="tag">🌙 深夜哲学家</span>
-                    </div>
-                    <div class="mbti-quote">"看似在发呆，实则脑内已上演完三季连续剧"</div>
+                    <ul class="tags" role="list">
+                        <li class="tag">🔮 INFJ提倡者</li>
+                        <li class="tag">🐛 Bug终结者</li>
+                        <li class="tag">🎧 耳机焊死在头上</li>
+                        <li class="tag">🌊 表面平静 内心翻涌</li>
+                        <li class="tag">🐂 牛马天花板</li>
+                        <li class="tag">🌙 深夜哲学家</li>
+                    </ul>
+                    <p class="mbti-quote">"看似在发呆，实则脑内已上演完三季连续剧"</p>
                 </div>
-            </div>
+            </section>
 
             <!-- 社交链接 -->
-            <div class="socials">
-                <a href="#" class="social-link" title="GitHub">
-                    <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.705-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57C20.565 21.795 24 17.31 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            <nav class="socials" aria-label="社交链接">
+                <a href="https://github.com/ZhouDi-NJUPT" target="_blank" rel="noopener noreferrer" class="social-link" title="GitHub" aria-label="GitHub 主页">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.705-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57C20.565 21.795 24 17.31 24 12c0-6.63-5.37-12-12-12z"/></svg>
                 </a>
-                <a href="#" class="social-link" title="邮箱">
-                    <svg viewBox="0 0 24 24"><path d="M24 5.457v330c0 2.761-5.336 5.01-7.825 3.691L4.35 24.681C1.865 23.362 0 19.999 0 17.238V-2.457C0-5.218 5.336-7.462 7.825-6.144L19.65.316c2.485 1.319 4.35 4.682 4.35 7.443zM12 14.258l-7.2-4.14v8.279l7.2 4.14v-8.279zm7.2-4.14L12 5.977v8.279l7.2 4.14V9.977z" transform="scale(0.85) translate(2, 2)"/><path d="M22 6c0-1.29-.99-2.66-2.19-3.34L11.9.21c-.4-.2-.93-.3-1.45-.3s-1.05.1-1.45.31L2.18 3.35C.99 4.03 0 5.4 0 6.69v10.65c0 1.29.99 2.66 2.19 3.34l7.82 4.16c.4.21.93.31 1.45.31s1.05-.1 1.45-.31l7.82-4.16c1.19-.68 2.19-2.05 2.19-3.34V6zm-11.82.45l5.03 2.68-5.03 2.68L5.15 9.13l5.03-2.68z"/></svg>
+                <a href="mailto:zhoudi@njupt.edu.cn" class="social-link" title="邮箱" aria-label="发送邮件">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 6c0-1.29-.99-2.66-2.19-3.34L11.9.21c-.4-.2-.93-.3-1.45-.3s-1.05.1-1.45.31L2.18 3.35C.99 4.03 0 5.4 0 6.69v10.65c0 1.29.99 2.66 2.19 3.34l7.82 4.16c.4.21.93.31 1.45.31s1.05-.1 1.45-.31l7.82-4.16c1.19-.68 2.19-2.05 2.19-3.34V6zm-11.82.45l5.03 2.68-5.03 2.68L5.15 9.13l5.03-2.68z"/></svg>
                 </a>
-                <a href="#" class="social-link" title="微信">
-                    <svg viewBox="0 0 24 24"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.32.32 0 0 0 .188-.066l2.01-1.178a.884.884 0 0 1 .708-.12c1.083.313 2.248.49 3.464.49h.355c-.215-.622-.342-1.277-.342-1.956 0-3.78 3.415-6.846 7.626-6.846.243 0 .48.018.72.04C17.632 4.575 13.55 2.188 8.69 2.188zm-3.17 4.764a1.13 1.13 0 1 1 0 2.26 1.13 1.13 0 0 1 0-2.26zm5.65 0a1.13 1.13 0 1 1 0 2.26 1.13 1.13 0 0 1 0-2.26zm5.28 3.563c-3.598 0-6.516 2.598-6.516 5.802 0 3.205 2.918 5.8 6.516 5.8.86 0 1.685-.146 2.448-.405a.72.72 0 0 1 .574.099l1.626.952a.26.26 0 0 0 .151.054.24.24 0 0 0 .236-.24c0-.058-.024-.116-.039-.174l-.315-1.197a.48.48 0 0 1 .173-.54c1.488-1.087 2.449-2.729 2.449-4.554 0-3.204-2.918-5.8-6.516-5.8zm-1.913 3.687a.915.915 0 1 1 0 1.83.915.915 0 0 1 0-1.83zm3.83 0a.915.915 0 1 1 0 1.83.915.915 0 0 1 0-1.83z"/></svg>
+                <a href="#" class="social-link" title="微信" aria-label="微信">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.32.32 0 0 0 .188-.066l2.01-1.178a.884.884 0 0 1 .708-.12c1.083.313 2.248.49 3.464.49h.355c-.215-.622-.342-1.277-.342-1.956 0-3.78 3.415-6.846 7.626-6.846.243 0 .48.018.72.04C17.632 4.575 13.55 2.188 8.69 2.188zm-3.17 4.764a1.13 1.13 0 1 1 0 2.26 1.13 1.13 0 0 1 0-2.26zm5.65 0a1.13 1.13 0 1 1 0 2.26 1.13 1.13 0 0 1 0-2.26zm5.28 3.563c-3.598 0-6.516 2.598-6.516 5.802 0 3.205 2.918 5.8 6.516 5.8.86 0 1.685-.146 2.448-.405a.72.72 0 0 1 .574.099l1.626.952a.26.26 0 0 0 .151.054.24.24 0 0 0 .236-.24c0-.058-.024-.116-.039-.174l-.315-1.197a.48.48 0 0 1 .173-.54c1.488-1.087 2.449-2.729 2.449-4.554 0-3.204-2.918-5.8-6.516-5.8zm-1.913 3.687a.915.915 0 1 1 0 1.83.915.915 0 0 1 0-1.83zm3.83 0a.915.915 0 1 1 0 1.83.915.915 0 0 1 0-1.83z"/></svg>
                 </a>
-                <a href="#" class="social-link" title="微博">
-                    <svg viewBox="0 0 24 24"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.737 5.439v.004z"/><path d="M9.052 17.219c-.215.688-.965 1.226-1.672 1.207-.7-.021-1.612-.583-1.612-1.298 0-.716.616-1.721 1.612-1.721.996 0 1.869.732 1.672 1.721v.391z"/><path d="M10.47 16.234c-.164.364-.582.532-.93.378-.35-.155-.516-.571-.355-.936.158-.366.566-.531.916-.376.354.156.53.571.37.934z"/><path d="M23.52 6.94c-.43-2.242-1.926-4.094-4.238-5.073-.464-.196-.967-.276-1.494-.276-.967 0-1.973.352-2.756.96-.308.238-.361.685-.118.987.246.304.697.358 1.004.119.5-.391 1.2-.648 1.869-.648.353 0 .682.068.979.195 1.619.684 2.689 1.918 3.014 3.49.082.391-.053.698-.342.853-.141.075-.297.079-.438.079-.137 0-.289-.061-.438-.126-.199-.087-.422-.18-.674-.18-.256 0-.52.09-.799.276-.303.2-.535.473-.667.771-.022.05-.043.108-.062.169-.176.554-.301 1.043-.146 1.616.057.214.057.214.226.357.059.053.143.087.214.072.096-.022.158-.065.221-.13.062-.068.143-.118.229-.118h.023c.096 0 .174.054.234.118.062.068.143.108.223.108.086 0 .176-.054.226-.108.057-.062.137-.108.226-.108h.023c.086 0 .168.054.226.118.062.064.143.118.23.118h.021c.086 0 .168-.054.226-.118.062-.064.143-.108.226-.108h.022c.086 0 .169.054.226.118.062.064.143.108.226.108h.022c.086 0 .169-.054.226-.108.062-.064.143-.118.226-.118.012 0 .023.004.035.004.082 0 .164-.054.226-.108.062-.064.143-.108.226-.108h.022c.086 0 .169.054.226.108.062.064.143.108.226.108h.022c.086 0 .169-.054.226-.108.062-.064.143-.108.226-.108.012 0 .023.004.035.004.082 0 .164-.054.226-.108.062-.064.143-.108.226-.108.012 0 .023.004.035.004z"/><path d="M20.946 1.763c-.301-.13-.612-.21-.936-.21-.33 0-.67.087-.969.265-.301.176-.43.418-.43.66 0 .245.169.477.43.605.301.13.612.21.936.21.33 0 .67-.087.969-.265.301-.176.43-.418.43-.66 0-.245-.169-.477-.43-.605z"/></svg>
+                <a href="#" class="social-link" title="微博" aria-label="微博">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.737 5.439v.004z"/><path d="M9.052 17.219c-.215.688-.965 1.226-1.672 1.207-.7-.021-1.612-.583-1.612-1.298 0-.716.616-1.721 1.612-1.721.996 0 1.869.732 1.672 1.721v.391z"/><path d="M10.47 16.234c-.164.364-.582.532-.93.378-.35-.155-.516-.571-.355-.936.158-.366.566-.531.916-.376.354.156.53.571.37.934z"/><path d="M23.52 6.94c-.43-2.242-1.926-4.094-4.238-5.073-.464-.196-.967-.276-1.494-.276-.967 0-1.973.352-2.756.96-.308.238-.361.685-.118.987.246.304.697.358 1.004.119.5-.391 1.2-.648 1.869-.648.353 0 .682.068.979.195 1.619.684 2.689 1.918 3.014 3.49.082.391-.053.698-.342.853-.141.075-.297.079-.438.079-.137 0-.289-.061-.438-.126-.199-.087-.422-.18-.674-.18-.256 0-.52.09-.799.276-.303.2-.535.473-.667.771-.022.05-.043.108-.062.169-.176.554-.301 1.043-.146 1.616.057.214.057.214.226.357.059.053.143.087.214.072.096-.022.158-.065.221-.13.062-.068.143-.118.229-.118h.023c.096 0 .174.054.234.118.062.068.143.108.223.108.086 0 .176-.054.226-.108.057-.062.137-.108.226-.108h.022c.086 0 .169.054.226.118.062.064.143.118.23.118h.021c.086 0 .168-.054.226-.118.062-.064.143-.108.226-.108h.022c.086 0 .169.054.226.118.062.064.143.108.226.108h.022c.086 0 .169-.054.226-.108.062-.064.143-.118.226-.118.012 0 .023.004.035.004.082 0 .164-.054.226-.108.062-.064.143-.108.226-.108h.022c.086 0 .169.054.226.108.062.064.143.108.226.108h.022c.086 0 .169-.054.226-.108.062-.064.143-.108.226-.108.012 0 .023.004.035.004.082 0 .164-.054.226-.108.062-.064.143-.108.226-.108.012 0 .023.004.035.004z"/><path d="M20.946 1.763c-.301-.13-.612-.21-.936-.21-.33 0-.67.087-.969.265-.301.176-.43.418-.43.66 0 .245.169.477.43.605.301.13.612.21.936.21.33 0 .67-.087.969-.265.301-.176.43-.418.43-.66 0-.245-.169-.477-.43-.605z"/></svg>
                 </a>
-            </div>
+            </nav>
         </div>
 
-        <div class="footer">
-            Made with <span class="heart">♥</span> by 史迪仔 | © 2026
-        </div>
-    </div>
+        <footer class="footer">
+            Made with <span class="heart" aria-hidden="true">♥</span> by 史迪仔 | © 2026
+        </footer>
+    </main>
 
     <script>
+    (function() {
+        'use strict';
+
+        var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+
         // ====== 音效系统 (Web Audio 合成) ======
-        let audioCtx = null;
+        var audioCtx = null;
         function getAudio() {
+            if (prefersReducedMotion) return null;
             if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                var AC = window.AudioContext || window.webkitAudioContext;
+                if (!AC) return null;
+                audioCtx = new AC();
             }
             if (audioCtx.state === 'suspended') audioCtx.resume();
             return audioCtx;
         }
 
-        // 点击音效 - 激光 zap
-        function playClickSound() {
-            const ctx = getAudio();
-            const t = ctx.currentTime;
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(800, t);
-            osc.frequency.exponentialRampToValueAtTime(100, t + 0.15);
-            gain.gain.setValueAtTime(0.15, t);
-            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.start(t);
-            osc.stop(t + 0.15);
-
-            // 叠加一个高频闪光音
-            const osc2 = ctx.createOscillator();
-            const gain2 = ctx.createGain();
-            osc2.type = 'sine';
-            osc2.frequency.setValueAtTime(1600, t);
-            osc2.frequency.exponentialRampToValueAtTime(2400, t + 0.08);
-            gain2.gain.setValueAtTime(0.08, t);
-            gain2.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
-            osc2.connect(gain2);
-            gain2.connect(ctx.destination);
-            osc2.start(t);
-            osc2.stop(t + 0.08);
-        }
-
-        // 悬停音效 - 轻微 blip (带冷却，防止边界反复触发)
-        let lastHoverSound = 0;
+        var lastHoverSound = 0;
         function playHoverSound() {
-            const now = Date.now();
+            if (isCoarsePointer) return;
+            var now = Date.now();
             if (now - lastHoverSound < 500) return;
             lastHoverSound = now;
 
-            const ctx = getAudio();
-            const t = ctx.currentTime;
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
+            var ctx = getAudio();
+            if (!ctx) return;
+            var t = ctx.currentTime;
+            var osc = ctx.createOscillator();
+            var gain = ctx.createGain();
             osc.type = 'sine';
             osc.frequency.setValueAtTime(1200, t);
             osc.frequency.exponentialRampToValueAtTime(1800, t + 0.05);
@@ -853,207 +851,232 @@
             osc.stop(t + 0.05);
         }
 
-        // ====== 自定义光标系统 ======
-        const cursorDot = document.getElementById('cursorDot');
-        const cursorRing = document.getElementById('cursorRing');
-        const cursorGlow = document.getElementById('cursorGlow');
+        function playClickSound() {
+            var ctx = getAudio();
+            if (!ctx) return;
+            var t = ctx.currentTime;
+            var osc = ctx.createOscillator();
+            var gain = ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(800, t);
+            osc.frequency.exponentialRampToValueAtTime(100, t + 0.15);
+            gain.gain.setValueAtTime(0.15, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(t);
+            osc.stop(t + 0.15);
 
-        let mouseX = 0, mouseY = 0;
-        let ringX = 0, ringY = 0;
-        let glowX = 0, glowY = 0;
-
-        document.addEventListener('mousemove', function(e) {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-            // 光点即时跟随
-            cursorDot.style.left = mouseX + 'px';
-            cursorDot.style.top = mouseY + 'px';
-        });
-
-        // 圆环和光晕延迟跟随
-        function animateCursor() {
-            ringX += (mouseX - ringX) * 0.15;
-            ringY += (mouseY - ringY) * 0.15;
-            cursorRing.style.left = ringX + 'px';
-            cursorRing.style.top = ringY + 'px';
-
-            glowX += (mouseX - glowX) * 0.06;
-            glowY += (mouseY - glowY) * 0.06;
-            cursorGlow.style.left = glowX + 'px';
-            cursorGlow.style.top = glowY + 'px';
-
-            requestAnimationFrame(animateCursor);
+            var osc2 = ctx.createOscillator();
+            var gain2 = ctx.createGain();
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(1600, t);
+            osc2.frequency.exponentialRampToValueAtTime(2400, t + 0.08);
+            gain2.gain.setValueAtTime(0.08, t);
+            gain2.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+            osc2.connect(gain2);
+            gain2.connect(ctx.destination);
+            osc2.start(t);
+            osc2.stop(t + 0.08);
         }
-        animateCursor();
 
-        // 悬停交互元素时光环变大
-        document.querySelectorAll('a, .avatar, .tag, .mbti-card').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursorRing.classList.add('hovering');
-                playHoverSound();
+        // ====== 自定义光标系统（仅精确指针设备）=====
+        var cursorDot = document.getElementById('cursorDot');
+        var cursorRing = document.getElementById('cursorRing');
+        var cursorGlow = document.getElementById('cursorGlow');
+        var useCustomCursor = !isCoarsePointer && !prefersReducedMotion;
+
+        var mouseX = 0, mouseY = 0;
+        var ringX = 0, ringY = 0;
+        var glowX = 0, glowY = 0;
+
+        if (useCustomCursor) {
+            document.body.classList.add('custom-cursor');
+
+            document.addEventListener('mousemove', function(e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                cursorDot.style.left = mouseX + 'px';
+                cursorDot.style.top = mouseY + 'px';
             });
-            el.addEventListener('mouseleave', () => cursorRing.classList.remove('hovering'));
-        });
+
+            (function animateCursor() {
+                ringX += (mouseX - ringX) * 0.15;
+                ringY += (mouseY - ringY) * 0.15;
+                cursorRing.style.left = ringX + 'px';
+                cursorRing.style.top = ringY + 'px';
+
+                glowX += (mouseX - glowX) * 0.06;
+                glowY += (mouseY - glowY) * 0.06;
+                cursorGlow.style.left = glowX + 'px';
+                cursorGlow.style.top = glowY + 'px';
+
+                requestAnimationFrame(animateCursor);
+            })();
+
+            document.querySelectorAll('a, .avatar, .tag, .mbti-card').forEach(function(el) {
+                el.addEventListener('mouseenter', function() {
+                    cursorRing.classList.add('hovering');
+                    playHoverSound();
+                });
+                el.addEventListener('mouseleave', function() {
+                    cursorRing.classList.remove('hovering');
+                });
+            });
+        } else {
+            cursorDot.style.display = 'none';
+            cursorRing.style.display = 'none';
+            cursorGlow.style.display = 'none';
+        }
 
         // ====== 能量拖尾 ======
-        const trailCanvas = document.getElementById('trail');
-        const trailCtx = trailCanvas.getContext('2d');
-        let trailParticles = [];
+        var trailCanvas = document.getElementById('trail');
+        var trailCtx = trailCanvas.getContext('2d');
+        var trailParticles = [];
+        var TRAIL_MAX = 200;
+        var lastTrailX = 0, lastTrailY = 0;
 
-        function resizeTrail() {
-            trailCanvas.width = window.innerWidth;
-            trailCanvas.height = window.innerHeight;
-        }
-        resizeTrail();
-        window.addEventListener('resize', resizeTrail);
-
-        class TrailParticle {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 4 + 2;
-                this.speedX = (Math.random() - 0.5) * 2;
-                this.speedY = (Math.random() - 0.5) * 2;
-                this.life = 1;
-                this.decay = Math.random() * 0.03 + 0.02;
-                const colors = ['#00f2fe', '#4facfe', '#667eea', '#f093fb', '#764ba2'];
-                this.color = colors[Math.floor(Math.random() * colors.length)];
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.life -= this.decay;
-                this.size *= 0.96;
-            }
-            draw() {
-                trailCtx.beginPath();
-                trailCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                trailCtx.fillStyle = this.color;
-                trailCtx.globalAlpha = this.life;
-                trailCtx.shadowBlur = 10;
-                trailCtx.shadowColor = this.color;
-                trailCtx.fill();
-                trailCtx.shadowBlur = 0;
-            }
-        }
-
-        let lastTrailX = 0, lastTrailY = 0;
-        document.addEventListener('mousemove', function(e) {
-            const dx = e.clientX - lastTrailX;
-            const dy = e.clientY - lastTrailY;
-            const speed = Math.sqrt(dx * dx + dy * dy);
-            // 移动越快，拖尾粒子越多
-            const count = Math.min(Math.floor(speed / 3), 5);
-            for (let i = 0; i < count; i++) {
-                trailParticles.push(new TrailParticle(e.clientX, e.clientY));
-            }
-            lastTrailX = e.clientX;
-            lastTrailY = e.clientY;
-        });
-
-        function animateTrail() {
-            trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
-            trailParticles.forEach((p, i) => {
-                p.update();
-                p.draw();
-                if (p.life <= 0 || p.size < 0.3) {
-                    trailParticles.splice(i, 1);
-                }
-            });
-            // 限制数量
-            if (trailParticles.length > 200) {
-                trailParticles.splice(0, trailParticles.length - 200);
-            }
-            requestAnimationFrame(animateTrail);
-        }
-        animateTrail();
-
-        // ====== 点击爆发效果 ======
-        document.addEventListener('click', function(e) {
-            playClickSound();
-            for (let i = 0; i < 12; i++) {
-                const p = new TrailParticle(e.clientX, e.clientY);
-                const angle = (Math.PI * 2 / 12) * i;
-                p.speedX = Math.cos(angle) * (Math.random() * 4 + 2);
-                p.speedY = Math.sin(angle) * (Math.random() * 4 + 2);
-                p.size = Math.random() * 5 + 3;
-                trailParticles.push(p);
-            }
-        });
-
-        // ====== 粒子动画 ======
-        const canvas = document.getElementById('particles');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        let mouse = { x: null, y: null };
-
-        function resizeCanvas() {
+        function resizeCanvasEl(canvas) {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
+        resizeCanvasEl(trailCanvas);
 
-        class Particle {
-            constructor() {
-                this.reset();
-                this.y = Math.random() * canvas.height;
-            }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.4;
-                this.speedY = (Math.random() - 0.5) * 0.4;
-                this.opacity = Math.random() * 0.5 + 0.2;
-                const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#ffffff'];
-                this.color = colors[Math.floor(Math.random() * colors.length)];
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
+        function TrailParticle(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 4 + 2;
+            this.speedX = (Math.random() - 0.5) * 2;
+            this.speedY = (Math.random() - 0.5) * 2;
+            this.life = 1;
+            this.decay = Math.random() * 0.03 + 0.02;
+            var colors = ['#00f2fe', '#4facfe', '#667eea', '#f093fb', '#764ba2'];
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+        }
+        TrailParticle.prototype.update = function() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.life -= this.decay;
+            this.size *= 0.96;
+        };
+        TrailParticle.prototype.draw = function() {
+            trailCtx.beginPath();
+            trailCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            trailCtx.fillStyle = this.color;
+            trailCtx.globalAlpha = this.life;
+            trailCtx.shadowBlur = 10;
+            trailCtx.shadowColor = this.color;
+            trailCtx.fill();
+            trailCtx.shadowBlur = 0;
+        };
 
-                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        if (!prefersReducedMotion) {
+            document.addEventListener('mousemove', function(e) {
+                if (isCoarsePointer) return;
+                var dx = e.clientX - lastTrailX;
+                var dy = e.clientY - lastTrailY;
+                var speed = Math.sqrt(dx * dx + dy * dy);
+                var count = Math.min(Math.floor(speed / 3), 5);
+                for (var i = 0; i < count; i++) {
+                    trailParticles.push(new TrailParticle(e.clientX, e.clientY));
+                }
+                lastTrailX = e.clientX;
+                lastTrailY = e.clientY;
+            });
 
-                // 鼠标互动 - 科技感力场排斥
-                if (mouse.x !== null) {
-                    const dx = mouse.x - this.x;
-                    const dy = mouse.y - this.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 180) {
-                        const force = (180 - dist) / 180;
-                        this.x -= dx * force * 0.03;
-                        this.y -= dy * force * 0.03;
+            document.addEventListener('click', function(e) {
+                playClickSound();
+                if (isCoarsePointer) return;
+                for (var i = 0; i < 12; i++) {
+                    var p = new TrailParticle(e.clientX, e.clientY);
+                    var angle = (Math.PI * 2 / 12) * i;
+                    p.speedX = Math.cos(angle) * (Math.random() * 4 + 2);
+                    p.speedY = Math.sin(angle) * (Math.random() * 4 + 2);
+                    p.size = Math.random() * 5 + 3;
+                    trailParticles.push(p);
+                }
+            });
+
+            (function animateTrail() {
+                trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+                for (var i = trailParticles.length - 1; i >= 0; i--) {
+                    var p = trailParticles[i];
+                    p.update();
+                    p.draw();
+                    if (p.life <= 0 || p.size < 0.3) {
+                        trailParticles.splice(i, 1);
                     }
                 }
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.opacity;
-                ctx.fill();
-            }
+                if (trailParticles.length > TRAIL_MAX) {
+                    trailParticles.splice(0, trailParticles.length - TRAIL_MAX);
+                }
+                requestAnimationFrame(animateTrail);
+            })();
         }
+
+        // ====== 粒子动画 ======
+        var canvas = document.getElementById('particles');
+        var ctx = canvas.getContext('2d');
+        var particles = [];
+        var mouse = { x: null, y: null };
+        var PARTICLE_MAX = 150;
+
+        resizeCanvasEl(canvas);
+
+        function Particle() {
+            this.reset();
+        }
+        Particle.prototype.reset = function() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.4;
+            this.speedY = (Math.random() - 0.5) * 0.4;
+            this.opacity = Math.random() * 0.5 + 0.2;
+            var colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#ffffff'];
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+        };
+        Particle.prototype.update = function() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+
+            if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+
+            if (mouse.x !== null) {
+                var dx = mouse.x - this.x;
+                var dy = mouse.y - this.y;
+                var dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 180) {
+                    var force = (180 - dist) / 180;
+                    this.x -= dx * force * 0.03;
+                    this.y -= dy * force * 0.03;
+                }
+            }
+        };
+        Particle.prototype.draw = function() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.globalAlpha = this.opacity;
+            ctx.fill();
+        };
 
         function initParticles() {
             particles = [];
-            const count = Math.min(80, Math.floor(window.innerWidth / 15));
-            for (let i = 0; i < count; i++) {
+            var count = Math.min(80, Math.floor(window.innerWidth / 15));
+            for (var i = 0; i < count; i++) {
                 particles.push(new Particle());
             }
         }
         initParticles();
 
         function connectParticles() {
-            for (let a = 0; a < particles.length; a++) {
-                for (let b = a + 1; b < particles.length; b++) {
-                    const dx = particles[a].x - particles[b].x;
-                    const dy = particles[a].y - particles[b].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
+            for (var a = 0; a < particles.length; a++) {
+                for (var b = a + 1; b < particles.length; b++) {
+                    var dx = particles[a].x - particles[b].x;
+                    var dy = particles[a].y - particles[b].y;
+                    var dist = Math.sqrt(dx * dx + dy * dy);
                     if (dist < 130) {
                         ctx.beginPath();
                         ctx.strokeStyle = particles[a].color;
@@ -1064,11 +1087,10 @@
                         ctx.stroke();
                     }
                 }
-                // 粒子与鼠标连线 - 科技网络效果
                 if (mouse.x !== null) {
-                    const dxm = particles[a].x - mouse.x;
-                    const dym = particles[a].y - mouse.y;
-                    const distm = Math.sqrt(dxm * dxm + dym * dym);
+                    var dxm = particles[a].x - mouse.x;
+                    var dym = particles[a].y - mouse.y;
+                    var distm = Math.sqrt(dxm * dxm + dym * dym);
                     if (distm < 200) {
                         ctx.beginPath();
                         ctx.strokeStyle = '#4facfe';
@@ -1082,45 +1104,43 @@
             }
         }
 
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            connectParticles();
-            requestAnimationFrame(animateParticles);
+        if (!prefersReducedMotion) {
+            (function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(function(p) { p.update(); p.draw(); });
+                connectParticles();
+                requestAnimationFrame(animateParticles);
+            })();
         }
-        animateParticles();
 
         // ====== 矩阵代码雨 ======
-        const matrixCanvas = document.getElementById('matrix');
-        const mctx = matrixCanvas.getContext('2d');
-        let matrixColumns = [];
-        const matrixChars = '01BUG测试牛马代码用例耳机音乐发呆宇宙人生史迪仔<>/{}[]#$%&*';
+        var matrixCanvas = document.getElementById('matrix');
+        var mctx = matrixCanvas.getContext('2d');
+        var matrixColumns = [];
+        var matrixChars = '01BUG测试牛马代码用例耳机音乐发呆宇宙人生史迪仔<>/{}[]#$%&*';
+        var matrixTimer = null;
 
         function resizeMatrix() {
-            matrixCanvas.width = window.innerWidth;
-            matrixCanvas.height = window.innerHeight;
-            const fontSize = 14;
-            const colCount = Math.floor(matrixCanvas.width / fontSize);
+            resizeCanvasEl(matrixCanvas);
+            var fontSize = 14;
+            var colCount = Math.floor(matrixCanvas.width / fontSize);
             matrixColumns = [];
-            for (let i = 0; i < colCount; i++) {
+            for (var i = 0; i < colCount; i++) {
                 matrixColumns[i] = Math.random() * -100;
             }
         }
-        resizeMatrix();
-        window.addEventListener('resize', resizeMatrix);
 
         function drawMatrix() {
             mctx.fillStyle = 'rgba(10, 10, 26, 0.08)';
             mctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
             mctx.font = '14px monospace';
 
-            for (let i = 0; i < matrixColumns.length; i++) {
-                const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
-                const x = i * 14;
-                const y = matrixColumns[i] * 14;
+            for (var i = 0; i < matrixColumns.length; i++) {
+                var char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                var x = i * 14;
+                var y = matrixColumns[i] * 14;
 
-                // 随机颜色 - 蓝绿紫
-                const colors = ['#4facfe', '#00f2fe', '#a78bfa', '#6ee7b7'];
+                var colors = ['#4facfe', '#00f2fe', '#a78bfa', '#6ee7b7'];
                 mctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
                 mctx.fillText(char, x, y);
 
@@ -1130,10 +1150,36 @@
                 matrixColumns[i]++;
             }
         }
-        setInterval(drawMatrix, 50);
+
+        if (!prefersReducedMotion) {
+            resizeMatrix();
+            matrixTimer = setInterval(drawMatrix, 50);
+        }
+
+        // ====== 统一 resize 处理（防抖）=====
+        var resizeTimer = null;
+        window.addEventListener('resize', function() {
+            if (resizeTimer) clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                resizeCanvasEl(trailCanvas);
+                resizeCanvasEl(canvas);
+                initParticles();
+                if (!prefersReducedMotion) resizeMatrix();
+            }, 200);
+        });
+
+        // 页面不可见时暂停矩阵雨，节省资源
+        document.addEventListener('visibilitychange', function() {
+            if (prefersReducedMotion) return;
+            if (document.hidden) {
+                if (matrixTimer) { clearInterval(matrixTimer); matrixTimer = null; }
+            } else if (!matrixTimer) {
+                matrixTimer = setInterval(drawMatrix, 50);
+            }
+        });
 
         // ====== 打字机效果 ======
-        const phrases = [
+        var phrases = [
             "🐛 Bug？那不是我的菜，那是我的命",
             "🎧 耳机一戴，灵魂出窍，与我无瓜",
             "🧪 我不是在测试，我是在给代码验尸",
@@ -1144,13 +1190,14 @@
             "🎵 别人靠梦想活着，我靠歌单续命"
         ];
 
-        const typer = document.getElementById('typer');
-        let phraseIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
+        var typer = document.getElementById('typer');
+        var phraseIndex = 0;
+        var charIndex = 0;
+        var isDeleting = false;
+        var typeTimer = null;
 
         function type() {
-            const currentPhrase = phrases[phraseIndex];
+            var currentPhrase = phrases[phraseIndex];
 
             if (isDeleting) {
                 typer.textContent = currentPhrase.substring(0, charIndex - 1);
@@ -1160,7 +1207,7 @@
                 charIndex++;
             }
 
-            let typeSpeed = isDeleting ? 50 : 100;
+            var typeSpeed = isDeleting ? 50 : 100;
 
             if (!isDeleting && charIndex === currentPhrase.length) {
                 typeSpeed = 2000;
@@ -1171,25 +1218,25 @@
                 typeSpeed = 500;
             }
 
-            setTimeout(type, typeSpeed);
+            typeTimer = setTimeout(type, typeSpeed);
         }
         type();
 
         // ====== 头像点击彩蛋 ======
-        const avatar = document.getElementById('avatar');
-        const moods = ['👽', '🎧', '🐛', '🧪', '☕', '🎵', '🔥', '😎', '🐂', '💯'];
-        const avatarImg = avatar.querySelector('img');
-        const hues = [0, 45, 90, 135, 180, 225, 270, 315];
-        let hueIndex = 0;
+        var avatar = document.getElementById('avatar');
+        var avatarImg = avatar.querySelector('img');
+        var hues = [0, 45, 90, 135, 180, 225, 270, 315];
+        var hueIndex = 0;
         avatar.addEventListener('click', function() {
             hueIndex = (hueIndex + 1) % hues.length;
-            if (avatarImg) avatarImg.style.filter = `hue-rotate(${hues[hueIndex]}deg)`;
-            // 爆炸粒子效果
-            const rect = avatar.getBoundingClientRect();
-            const cx = rect.left + rect.width / 2;
-            const cy = rect.top + rect.height / 2;
-            for (let i = 0; i < 20; i++) {
-                const p = new Particle();
+            if (avatarImg) avatarImg.style.filter = 'hue-rotate(' + hues[hueIndex] + 'deg)';
+            if (prefersReducedMotion || isCoarsePointer) return;
+            var rect = avatar.getBoundingClientRect();
+            var cx = rect.left + rect.width / 2;
+            var cy = rect.top + rect.height / 2;
+            for (var i = 0; i < 20; i++) {
+                if (particles.length >= PARTICLE_MAX) break;
+                var p = new Particle();
                 p.x = cx;
                 p.y = cy;
                 p.size = Math.random() * 3 + 1;
@@ -1198,18 +1245,14 @@
                 p.opacity = 1;
                 particles.push(p);
             }
-            // 清理多余粒子
-            if (particles.length > 150) {
-                particles.splice(0, particles.length - 150);
-            }
         });
 
         // ====== 开机动画 ======
-        const bootScreen = document.getElementById('bootScreen');
-        const bootText = document.getElementById('bootText');
-        const bootProgress = document.getElementById('bootProgress');
+        var bootScreen = document.getElementById('bootScreen');
+        var bootText = document.getElementById('bootText');
+        var bootProgress = document.getElementById('bootProgress');
 
-        const bootLines = [
+        var bootLines = [
             '> INITIALIZING SYSTEM...',
             '> LOADING MODULE: bug_hunter.dll',
             '> LOADING MODULE: music_player.dll',
@@ -1219,51 +1262,57 @@
             '> SYSTEM READY. WELCOME, 史迪仔.'
         ];
 
-        let bootLineIndex = 0;
-        function showBootLine() {
-            if (bootLineIndex < bootLines.length) {
-                const line = document.createElement('div');
-                line.className = 'line';
-                line.textContent = bootLines[bootLineIndex];
-                line.style.animationDelay = '0s';
-                bootText.appendChild(line);
-                bootProgress.style.width = ((bootLineIndex + 1) / bootLines.length * 100) + '%';
-                bootLineIndex++;
-                setTimeout(showBootLine, 250);
-            } else {
-                setTimeout(() => {
-                    bootScreen.classList.add('hidden');
-                }, 600);
+        if (prefersReducedMotion) {
+            bootScreen.classList.add('hidden');
+        } else {
+            var bootLineIndex = 0;
+            function showBootLine() {
+                if (bootLineIndex < bootLines.length) {
+                    var line = document.createElement('div');
+                    line.className = 'line';
+                    line.textContent = bootLines[bootLineIndex];
+                    bootText.appendChild(line);
+                    bootProgress.style.width = ((bootLineIndex + 1) / bootLines.length * 100) + '%';
+                    bootLineIndex++;
+                    setTimeout(showBootLine, 250);
+                } else {
+                    setTimeout(function() {
+                        bootScreen.classList.add('hidden');
+                    }, 600);
+                }
             }
+            setTimeout(showBootLine, 300);
         }
-        setTimeout(showBootLine, 300);
 
         // ====== 背景音乐开关 ======
-        const bgm = document.getElementById('bgm');
-        const musicBtn = document.getElementById('musicBtn');
+        var bgm = document.getElementById('bgm');
+        var musicBtn = document.getElementById('musicBtn');
         bgm.volume = 0.5;
-        let userControlled = false;
+        var userControlled = false;
 
         musicBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             userControlled = true;
+            toggleBgm();
+        });
+
+        function toggleBgm() {
             if (bgm.paused) {
-                bgm.play();
-                musicBtn.classList.add('playing');
+                bgm.play().then(function() {
+                    musicBtn.classList.add('playing');
+                }).catch(function() {});
             } else {
                 bgm.pause();
                 musicBtn.classList.remove('playing');
             }
-        });
+        }
 
-        // 浏览器禁止无交互自动播放，故在用户第一次点击/按键时自动开始
         function tryAutoPlay() {
             if (userControlled) return;
             userControlled = true;
-            bgm.play().then(() => {
+            bgm.play().then(function() {
                 musicBtn.classList.add('playing');
-            }).catch(() => {
-                // 仍被拦截则保持手动按钮
+            }).catch(function() {
                 userControlled = false;
             });
             window.removeEventListener('click', tryAutoPlay);
@@ -1271,6 +1320,7 @@
         }
         window.addEventListener('click', tryAutoPlay);
         window.addEventListener('keydown', tryAutoPlay);
+    })();
     </script>
 </body>
 </html>
