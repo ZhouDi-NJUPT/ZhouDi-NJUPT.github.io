@@ -1288,11 +1288,9 @@
         var bgm = document.getElementById('bgm');
         var musicBtn = document.getElementById('musicBtn');
         bgm.volume = 0.5;
-        var userControlled = false;
 
         musicBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            userControlled = true;
             toggleBgm();
         });
 
@@ -1306,20 +1304,6 @@
                 musicBtn.classList.remove('playing');
             }
         }
-
-        function tryAutoPlay() {
-            if (userControlled) return;
-            userControlled = true;
-            bgm.play().then(function() {
-                musicBtn.classList.add('playing');
-            }).catch(function() {
-                userControlled = false;
-            });
-            window.removeEventListener('click', tryAutoPlay);
-            window.removeEventListener('keydown', tryAutoPlay);
-        }
-        window.addEventListener('click', tryAutoPlay);
-        window.addEventListener('keydown', tryAutoPlay);
     })();
     </script>
 </body>
